@@ -1,5 +1,30 @@
-div.finish_screen h1 {
-  font-size: 28px;
-  padding: 10%;
-  text-align: center;
+div.finish_screen{
+	display: flex;
+	height:100%;
+	flex-direction: column;
+	align-items: center;
+	h1 {
+	  font-size: 28px;
+	  padding: 30px;
+	  text-align: center;
+	}
+
+	.circle {
+		flex: 1;
+		width: 30%;
+	}
+}
+
+
+@media (max-width: 700px) {
+  div.finish_screen .circle {
+		flex: 1;
+		width: 60%;
+	}
+
+}
+
+.CircularProgressbar .CircularProgressbar-path {
+    stroke-linecap: square !important;
+    
 }

@@ -1,5 +1,7 @@
 import React from 'react';
 import './../assets/scss/finish_screen.scss';
+import CircularProgressbar from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 export default class FinishScreen extends React.Component {
   constructor(props){
@@ -23,9 +25,13 @@ export default class FinishScreen extends React.Component {
   }
   render(){
     let finishTitleText = this._getFinishScreenTitle(this.props.tracking.progress_measure, this.props.tracking.score);
+    let percentage = Math.round(this.props.tracking.score * 100) || 0;
     return (
       <div className="finish_screen">
-        <h1 id="finish_title">{finishTitleText}</h1>
+        <h1 id="finish_title">{this.props.msg}</h1>
+        <div className="circle">
+        <CircularProgressbar percentage={percentage} initialAnimation text={percentage +"%"}/>
+        </div>
       </div>
     );
   }

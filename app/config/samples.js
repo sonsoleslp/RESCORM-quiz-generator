@@ -71,5 +71,37 @@ export const quiz_example = {
       ],
       "difficulty":8,
     },
+    {
+      "type":"multiple_choice",
+      "single": true,
+      "value":"¿Cuál de las siguientes afirmaciones es verdadera?",
+      "choices":[
+        {
+          "id":"1",
+          "value":"Sidney es la capital de Australia.",
+          "answer":false,
+        }, {
+          "id":"2",
+          "value":"Bahrein es la capital de Bután.",
+          "answer":false,
+        }, {
+          "id":"3",
+          "value":"Ragga es la capital de Afganistán.",
+          "answer":false,
+        }, {
+          "id":"4",
+          "value":"Tórshavn es la capital de Islas Feroe.",
+          "answer":true,
+        },
+      ],
+      "difficulty":8,
+    },
+    {
+      "type":"true_false",
+      "single": true,
+      "value":"La capital de España es Madrid",
+      "answer": true,
+      "difficulty":8,
+    },
   ],
 };

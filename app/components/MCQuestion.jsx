@@ -4,6 +4,7 @@ import * as Utils from '../vendors/Utils.js';
 import {objectiveAccomplished, objectiveAccomplishedThunk} from './../reducers/actions';
 
 import MCQuestionChoice from './MCQuestionChoice.jsx';
+import MCQuestionChoiceSingle from './MCQuestionChoiceSingle.jsx';
 import QuestionButtons from './QuestionButtons.jsx';
 
 export default class MCQuestion extends React.Component {
@@ -22,11 +23,16 @@ export default class MCQuestion extends React.Component {
   handleChoiceChange(choice){
     let newSelectedChoices = Object.assign([], this.state.selected_choices_ids);
     let indexOf = newSelectedChoices.indexOf(choice.id);
-    if(indexOf === -1){
-      newSelectedChoices.push(choice.id);
+    if (this.props.question.single) {
+      newSelectedChoices = [choice.id];
     } else {
-      newSelectedChoices.splice(indexOf, 1);
+      if(indexOf === -1){
+        newSelectedChoices.push(choice.id);
+      } else {
+        newSelectedChoices.splice(indexOf, 1);
+      }
     }
+
     this.setState({selected_choices_ids:newSelectedChoices});
   }
   onAnswerQuestion(){
@@ -50,7 +56,7 @@ export default class MCQuestion extends React.Component {
       }
     }
     let scorePercentage = Math.max(0, (correctAnswers - incorrectAnswers) / this.props.question.choices.filter(function(c){return c.answer === true;}).length);
-
+    console.log("score",scorePercentage)
     // Send data via SCORM
     let objective = this.props.objective;
     this.props.dispatch(objectiveAccomplished(objective.id, objective.score * scorePercentage));
@@ -67,15 +73,22 @@ export default class MCQuestion extends React.Component {
   }
   render(){
     let choices = [];
-    for(let i = 0; i < this.props.question.choices.length; i++){
-      choices.push(<MCQuestionChoice key={"MyQuestion_" + "question_choice_" + i} choice={this.props.question.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.props.question.choices[i].id) !== -1} handleChange={this.handleChoiceChange.bind(this)} questionAnswered={this.state.answered}/>);
+    if (this.props.question.single) {
+      for(let i = 0; i < this.props.question.choices.length; i++){
+        choices.push(<MCQuestionChoiceSingle key={"MyQuestion_" + "question_choice_" + i} choice={this.props.question.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.props.question.choices[i].id) !== -1} handleChange={this.handleChoiceChange.bind(this)} questionAnswered={this.state.answered} config={this.props.config} />);
+      }
+    } else {
+      for(let i = 0; i < this.props.question.choices.length; i++){
+        choices.push(<MCQuestionChoice key={"MyQuestion_" + "question_choice_" + i} choice={this.props.question.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.props.question.choices[i].id) !== -1} handleChange={this.handleChoiceChange.bind(this)} questionAnswered={this.state.answered} config={this.props.config} />);
+      }
     }
+
     return (
-      <div className="question">
+      [<div className="question">
         <h1>{this.props.question.value}</h1>
         {choices}
-        <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuestion.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.props.onResetQuiz} onNextQuestion={this.onNextQuestion.bind(this)} answered={this.state.answered} quizCompleted={this.props.quizCompleted} allow_finish={this.props.isLastQuestion}/>
-      </div>
+      </div>,
+        <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuestion.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.props.onResetQuiz} onNextQuestion={this.onNextQuestion.bind(this)} answered={this.state.answered} quizCompleted={this.props.quizCompleted} allow_finish={this.props.isLastQuestion}/>]
     );
   }
 }

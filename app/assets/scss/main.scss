@@ -1,23 +1,36 @@
-body {
-  background-color: white;
+* {
+  font-family: Roboto;
 }
 
+body {
+  background-color: white;
+  margin: 0;
+}
+html,body,#root {
+  height: 100%;
+}
 div.header_wrapper img {
   width: 71px;
   height: 50px;
+  vertical-align: middle;
+  margin-top: 5px;
   float: left;
-  margin-top: 8px;
 }
 
 #heading {
   font-size: 30px;
-  margin: 8px;
+  vertical-align: middle;
+  line-height: 60px;
+  margin: 0px;
+  height:60px;
 }
 
 #tracking{
   font-size: 18px;
   color: black;
-  margin: 8px;
+  padding: 15px;
+  padding-bottom: 0px;
+  padding-top: 0px;
 }
 
 #tracking span {
@@ -27,5 +40,38 @@ div.header_wrapper img {
 #logged_user {
   font-size: 18px;
   color: gray;
-  margin: 8px;
+  padding: 15px;
+  padding-top: 0px;
+
+
+}
+#container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .quiz {
+      display: flex;
+  flex-direction: column;
+    flex: 1;
+    .question {
+      padding: 15px;
+    }
+  }
+}
+
+header {
+}
+
+.progressbar-container {
+  padding: 0px;
+  width: 100%;
+}
+.progressbar {
+  height: 5px;
+  transition: 0.5s ease-in-out all;
+}
+
+.score {
+  float: right;
+  margin-right: 10px;
 }

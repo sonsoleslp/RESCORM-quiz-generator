@@ -6,6 +6,7 @@ import {addObjectives, resetObjectives, finishApp} from './../reducers/actions';
 
 import QuizHeader from './QuizHeader.jsx';
 import MCQuestion from './MCQuestion.jsx';
+import TFQuestion from './TFQuestion.jsx';
 
 export default class Quiz extends React.Component {
   constructor(props){
@@ -78,7 +79,10 @@ export default class Quiz extends React.Component {
 
     switch (currentQuestion.type){
     case "multiple_choice":
-      currentQuestionRender = (<MCQuestion question={currentQuestion} dispatch={this.props.dispatch} I18n={this.props.I18n} objective={objective} onNextQuestion={onNextQuestion} onResetQuiz={onResetQuiz} isLastQuestion={isLastQuestion} quizCompleted={this.props.tracking.finished}/>);
+      currentQuestionRender = (<MCQuestion config={this.props.config} question={currentQuestion} dispatch={this.props.dispatch} I18n={this.props.I18n} objective={objective} onNextQuestion={onNextQuestion} onResetQuiz={onResetQuiz} isLastQuestion={isLastQuestion} quizCompleted={this.props.tracking.finished}/>);
+      break;
+    case "true_false":  
+      currentQuestionRender = (<TFQuestion config={this.props.config} question={currentQuestion} dispatch={this.props.dispatch} I18n={this.props.I18n} objective={objective} onNextQuestion={onNextQuestion} onResetQuiz={onResetQuiz} isLastQuestion={isLastQuestion} quizCompleted={this.props.tracking.finished}/>);
       break;
     default:
       currentQuestionRender = "Question type not supported";
@@ -86,7 +90,7 @@ export default class Quiz extends React.Component {
 
     return (
       <div className="quiz">
-        <QuizHeader I18n={this.props.I18n} quiz={this.state.quiz} currentQuestionIndex={this.state.current_question_index}/>
+        {/*<QuizHeader I18n={this.props.I18n} quiz={this.state.quiz} currentQuestionIndex={this.state.current_question_index}/>*/}
         {currentQuestionRender}
       </div>
     );
