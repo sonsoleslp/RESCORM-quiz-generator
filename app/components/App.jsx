@@ -17,6 +17,7 @@ export class App extends React.Component {
     I18n.init();
   }
   render(){
+    console.log(GLOBAL_CONFIG)
     let appHeader = "";
     let appContent = "";
 

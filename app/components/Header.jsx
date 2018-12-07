@@ -1,4 +1,5 @@
 import React from 'react';
+import {GLOBAL_CONFIG} from '../config/config.js';
 
 export default class Header extends React.Component {
   constructor(props){
@@ -40,7 +41,7 @@ export default class Header extends React.Component {
     return (
       <div className="header_wrapper">
         <a target="_blank" href="https://github.com/agordillo/RESCORM"><img src="assets/images/react_logo.png"/></a>
-        <h1 id="heading">{this.props.I18n.getTrans("i.title")}</h1>
+        <h1 id="heading">{GLOBAL_CONFIG.title}</h1>
         <p id="tracking">{trackingEls}</p>
         {loggedEl}
       </div>
