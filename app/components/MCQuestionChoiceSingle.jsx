@@ -9,13 +9,27 @@ export default class MCQuestionChoiceSingle extends React.Component {
     let showCorrection = (this.props.questionAnswered);
     if(showCorrection && this.props.config.feedback ){
       if(this.props.checked){
-        if(this.props.correct || this.props.choice.answer === true){
-          questionClassName += " question_choice_correct";
+        if(this.props.tf) {
+            if (this.props.correct) {
+              questionClassName += " question_choice_correct";
+            } else {
+            questionClassName += " question_choice_incorrect";
+          }
         } else {
-          questionClassName += " question_choice_incorrect";
+          if(this.props.correct || this.props.choice.answer === true){
+            questionClassName += " question_choice_correct";
+          } else {
+            questionClassName += " question_choice_incorrect";
+          }
         }
       } else if(this.props.correct || this.props.choice.answer === true){
-        questionClassName += " question_choice_correct";
+        if(this.props.tf ) {
+          if(this.props.correct) {
+            questionClassName += " question_choice_correct";
+          }
+        } else {
+          questionClassName += " question_choice_correct";
+        }
       }
     }
    /* if (this.props.config.feedback) {

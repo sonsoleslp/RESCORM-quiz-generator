@@ -21,7 +21,6 @@ export default class MCQuestionChoice extends React.Component {
    /* if (this.props.config.feedback) {
       questionClassName += " no-feedback";
     }*/
-    console.log(this.props.choice)
     return (
       <div className={questionClassName}>
         <div className="questionC1">

@@ -73,9 +73,24 @@ export class App extends React.Component {
   }
 
   componentDidMount(){
-    fetch("assets/test2.xml").then(res => res.text()).then(res => {
-      console.log(xmlToJson(res, (r,e)=>{console.log(r,e)}))
-      // this.setState({ quiz: });
+    fetch(GLOBAL_CONFIG.moodleXmlPath || "assets/test2.xml").then(res => res.text()).then(res => {
+      xmlToJson(res, (r,e)=>{
+        let questions = [];
+        for (let q in r.questions) {
+          let question = r.questions[q];
+          switch(question.type) {
+            case 'multichoice':
+            questions.push({ type: 'multiple_choice', value: question.questiontext, choices: question.answers.map((a,id)=>{return {id, value: a.text, answer: a.score === 100}}), single: question.single})
+            break;
+            case 'truefalse':
+            questions.push({ type: 'true_false', single: true, value: question.questiontext, answer: question.answers.filter(a=> a.score === 100).map(a=> a.text)[0]})
+            break;
+            default:
+              console.error("Unsupported");
+          }
+        }
+        this.setState({ quiz: {title: "", questions}});
+      })
     })
   }
 }

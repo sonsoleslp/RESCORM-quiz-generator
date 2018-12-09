@@ -62,7 +62,7 @@ export default class TFQuestion extends React.Component {
   render(){
     let choices = [];
       for(let i = 0; i < this.choices.length; i++){
-        choices.push(<MCQuestionChoiceSingle key={"MyQuestion_" + "question_choice_" + i} correct={this.choices[i].id} choice={this.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.choices[i].id) !== -1} handleChange={this.handleChoiceChange.bind(this)} questionAnswered={this.state.answered} config={this.props.config} />);
+        choices.push(<MCQuestionChoiceSingle key={"MyQuestion_" + "question_choice_" + i} correct={this.choices[i].id === this.props.question.answer} choice={this.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.choices[i].id) !== -1} handleChange={this.handleChoiceChange.bind(this)} questionAnswered={this.state.answered} config={this.props.config} tf/>);
       }
     return (
       [<div className="question">
