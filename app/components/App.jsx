@@ -19,9 +19,10 @@ export class App extends React.Component {
     this.state = {
       quiz: SAMPLES.quiz_example
     }
+
+    this.parseMoodleXML = this.parseMoodleXML.bind(this);
   }
   render(){
-    console.log(GLOBAL_CONFIG)
     let appHeader = "";
     let appContent = "";
 
@@ -36,7 +37,7 @@ export class App extends React.Component {
       }
     } else {
       appContent = (
-        <FinishScreen msg={GLOBAL_CONFIG.finalMessage} dispatch={this.props.dispatch} user_profile={this.props.user_profile} tracking={this.props.tracking} quiz={this.state.quiz} config={GLOBAL_CONFIG} I18n={I18n}/>
+        <FinishScreen msg={this.props.tracking.score >= GLOBAL_CONFIG.scorm.score_threshold ? GLOBAL_CONFIG.successMessage : GLOBAL_CONFIG.failMessage} dispatch={this.props.dispatch} user_profile={this.props.user_profile} tracking={this.props.tracking} quiz={this.state.quiz} config={GLOBAL_CONFIG} I18n={I18n}/>
       );
     }
 
@@ -72,27 +73,42 @@ export class App extends React.Component {
     );
   }
 
-  componentDidMount(){
-    fetch(GLOBAL_CONFIG.moodleXmlPath || "assets/test2.xml").then(res => res.text()).then(res => {
-      xmlToJson(res, (r,e)=>{
-        let questions = [];
-        for (let q in r.questions) {
-          let question = r.questions[q];
-          switch(question.type) {
-            case 'multichoice':
-            questions.push({ type: 'multiple_choice', value: question.questiontext, choices: question.answers.map((a,id)=>{return {id, value: a.text, answer: a.score === 100}}), single: question.single})
-            break;
-            case 'truefalse':
-            questions.push({ type: 'true_false', single: true, value: question.questiontext, answer: question.answers.filter(a=> a.score === 100).map(a=> a.text)[0]})
-            break;
-            default:
-              console.error("Unsupported");
-          }
+  parseMoodleXML(xml) {
+    xmlToJson(xml, (r,e)=>{
+      let questions = [];
+      for (let q in r.questions) {
+        let question = r.questions[q];
+        switch(question.type) {
+          case 'multichoice':
+          questions.push({ type: 'multiple_choice', value: question.questiontext, choices: question.answers.map((a,id)=>{return {id, value: a.text, answer: a.score === 100}}), single: question.single})
+          break;
+          case 'truefalse':
+          questions.push({ type: 'true_false', single: true, value: question.questiontext, answer: question.answers.filter(a=> a.score === 100).map(a=> a.text)[0]})
+          break;
+          default:
+            console.error("Unsupported");
         }
-        this.setState({ quiz: {title: "", questions}});
-      })
+      }
+      this.setState({ quiz: {title: "", questions}});
     })
   }
+  decode(input) {
+    return window.atob(input.slice(21));
+  }
+  componentDidMount(){
+    if (GLOBAL_CONFIG.dev) {
+      if(GLOBAL_CONFIG.moodleXmlPath) {
+        this.parseMoodleXML(this.decode(GLOBAL_CONFIG.moodleXmlPath));
+      }
+    } else {
+      fetch(GLOBAL_CONFIG.moodleXmlPath || "assets/test2.xml")
+      .then(res => res.text())
+      .then(res => {
+        this.parseMoodleXML(res);
+      })
+    }
+  }
+
 }
 
 function mapStateToProps(state){

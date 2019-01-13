@@ -38,8 +38,8 @@ export default class Header extends React.Component {
 
     return (
       <div className="header_wrapper">
-        <header className="secondary-color">
-          <a target="_blank" href="https://github.com/agordillo/RESCORM"><img src="assets/images/react_logo.png"/></a>
+        <header className="secondary-color">   
+        {this.props.config.logo ? <img src={this.props.config.logo}/>  : <span className="placeholder"/> }
           <h1 id="heading">{this.props.config.title}
           {this.props.config.feedback ? <span className="score">{score}</span> : null}
           </h1>

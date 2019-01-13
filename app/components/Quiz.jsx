@@ -17,7 +17,7 @@ export default class Quiz extends React.Component {
     // Adaptive behaviour
     // Sort questions based on difficulty
     let adaptive_sorted = false;
-    if((this.props.config.adaptive === true) && (typeof props.user_profile === "object") && (typeof props.user_profile.learner_preference === "object") && (typeof props.user_profile.learner_preference.difficulty === "number")){
+    /*if((this.props.config.adaptive === true) && (typeof props.user_profile === "object") && (typeof props.user_profile.learner_preference === "object") && (typeof props.user_profile.learner_preference.difficulty === "number")){
       let difficulty = props.user_profile.learner_preference.difficulty;
       if((difficulty >= 0) && (difficulty <= 10)){
         for(let i = 0; i < questions.length; i++){
@@ -30,8 +30,9 @@ export default class Quiz extends React.Component {
         adaptive_sorted = true;
       }
     }
-
-    if(adaptive_sorted === false){
+*/
+    console.log("RANDOM",this.props.config.randomQuestions)
+    if(this.props.config.randomQuestions){
       questions = Utils.shuffleArray(questions);
     }
 

@@ -16,14 +16,13 @@
     debug_scorm_api_window:false,
     available_locales:["en", "es"],
     // locale: "es",
-    adaptive:true,
+    adaptive:false,
     finish_screen:true,
-    finalMessage: "The content has ended. You may close this window.",
     scorm:{
-      completion_threshold:0.5,
-      score_threshold:0.6,
+      completion_threshold: window.config && window.config.threshold ?  (window.config.threshold / 100):0.5,
+      score_threshold: window.config && window.config.threshold ?  (window.config.threshold / 100):0.5,
     },
-    n:7,
+    n:5,
   },...window.config},
   production:{...{
     title: "Quiz",
@@ -41,14 +40,13 @@
     debug_scorm_api:false,
     debug_scorm_api_window:false,
     available_locales:["en", "es"],
-    adaptive:true,
+    adaptive:false,
     finish_screen:true,
-    finalMessage: "The content has ended. You may close this window.",
     scorm:{
-      completion_threshold:0.5,
-      score_threshold:0.6,
+      completion_threshold: window.config && window.config.threshold ?  (window.config.threshold / 100):0.5,
+      score_threshold: window.config && window.config.threshold ?  (window.config.threshold / 100):0.5,
     },
-    n:undefined,
+    n:5,
   },...window.config},
 };
 
