@@ -8,6 +8,15 @@
             </feedback>
         </category>
     </question>
+    <question type="numerical">
+        <name>
+            <text>¿Cuántos son 2 + 2?</text>
+        </name>
+        <questiontext>
+            <text>¿Cuántos son 2 + 2?</text>
+        </questiontext>
+        <answer fraction="100">4</answer>
+    </question>
     <question type="truefalse">
         <name>
             <text>Marque si las siguientes afirmaciones son verdaderas o falsas.</text>

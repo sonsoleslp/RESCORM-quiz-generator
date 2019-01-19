@@ -13,23 +13,58 @@ div.question {
     margin-top: 20px;
     margin-bottom: 20px;
   }
+
+  textarea {
+    width: 600px;
+    height: 200px;
+    max-width: 98%;
+    max-height: 50%;
+    resize: none;
+  }
+
+  input {
+    vertical-align: middle;
+  }
+
+  .feedback-icon {
+    vertical-align: middle;
+    padding-left: 10px;
+    &.correct {
+      color: #32e389;
+    }
+    &.incorrect {
+      color: tomato;
+    }
+  }
+  .feedbackInputAnswer{
+    color: tomato;
+  }
+  input[type="text"], input[type="number"] {
+    font-size: 23px;
+    height: 28px;
+    padding: 2px;
+  }
+
   div.question_choice {
     margin: 10px;
     padding: 2px;
     display: flex;
     flex-direction: row;
-    div.questionC1{
+    div.questionC1 {
       float: left;
       width: 35px;
       margin-top: 9px;
       margin-left: 10px;
     }
 
-    div.questionC2{
+    div.questionC2 {
       display: inline-block;
       width: auto;
       margin: 12px 8px 12px 8px;
-      cursor: pointer
+      cursor: pointer;
+      .feedback-icon {
+        vertical-align: top;
+      }
     }
 
     input[type="checkbox"] {
@@ -46,14 +81,6 @@ div.question {
       font-size: 20px;
       margin: 0px 0px 0px 0px;
     }
-
-  
-  &.question_choice_correct {
-    background: #bdffbd;
-  }
-  &.question_choice_incorrect {
-    background: #ffc8c8;
-  }
 }
 }
 
@@ -61,7 +88,7 @@ div.questionButtonsWrapper {
   padding: 10px;
    button.answerQuestion,   button.resetQuestion,   button.resetQuiz,  button.nextQuestion {
     padding: 13px;
-    margin-left: 10px;
+    margin-right: 10px;
     color: white;
     background: white;
     border: none; //2px solid black;

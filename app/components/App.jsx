@@ -17,7 +17,8 @@ export class App extends React.Component {
     super(props);
     I18n.init();
     this.state = {
-      quiz: SAMPLES.quiz_example
+      quiz: SAMPLES.quiz_example,
+      loading: true
     }
 
     this.parseMoodleXML = this.parseMoodleXML.bind(this);
@@ -26,19 +27,24 @@ export class App extends React.Component {
     let appHeader = "";
     let appContent = "";
 
-    if((this.props.tracking.finished !== true) || (GLOBAL_CONFIG.finish_screen === false)){
+    if (((this.props.tracking.finished !== true) || (GLOBAL_CONFIG.finish_screen === false))&& !this.state.loading){
       appHeader = (
         <Header user_profile={this.props.user_profile} tracking={this.props.tracking} config={GLOBAL_CONFIG} I18n={I18n}/>
       );
-      if(this.props.wait_for_user_profile !== true){
+      if(this.props.wait_for_user_profile !== true && !this.state.loading){
         appContent = (
           <Quiz dispatch={this.props.dispatch} user_profile={this.props.user_profile} tracking={this.props.tracking} quiz={this.state.quiz} config={GLOBAL_CONFIG} I18n={I18n}/>
         );
       }
-    } else {
+    } else if (!this.state.loading) {
       appContent = (
         <FinishScreen msg={this.props.tracking.score >= GLOBAL_CONFIG.scorm.score_threshold ? GLOBAL_CONFIG.successMessage : GLOBAL_CONFIG.failMessage} dispatch={this.props.dispatch} user_profile={this.props.user_profile} tracking={this.props.tracking} quiz={this.state.quiz} config={GLOBAL_CONFIG} I18n={I18n}/>
       );
+    } else {
+      console.log('spinning')
+      appContent = <div className="wholeScreen">
+        Loading...
+      </div>;
     }
 
     return (
@@ -76,35 +82,60 @@ export class App extends React.Component {
   parseMoodleXML(xml) {
     xmlToJson(xml, (r,e)=>{
       let questions = [];
+      console.log(r.questions)
       for (let q in r.questions) {
         let question = r.questions[q];
         switch(question.type) {
           case 'multichoice':
-          questions.push({ type: 'multiple_choice', value: question.questiontext, choices: question.answers.map((a,id)=>{return {id, value: a.text, answer: a.score === 100}}), single: question.single})
-          break;
+            questions.push({ type: 'multiple_choice', value: question.questiontext, choices: (question.answers || []).map((a,id)=>{return {id, value: a.text, answer: a.score === 100}}), single: question.single})
+            break;
           case 'truefalse':
-          questions.push({ type: 'true_false', single: true, value: question.questiontext, answer: question.answers.filter(a=> a.score === 100).map(a=> a.text)[0]})
-          break;
+            questions.push({ type: 'true_false', single: true, value: question.questiontext, answer: (question.answers || []).filter(a=> a.score === 100).map(a=> a.text)[0]})
+            break;
+          case 'numerical':
+            questions.push({ type: 'numerical', value: question.questiontext, answer: (question.correctAnswer || []), tolerance: question.tolerance})
+            break;
+          case 'shortanswer':
+            questions.push({ type: 'shortanswer', value: question.questiontext, answer: (question.answers || []).filter(a=> a.score === 100).map(a=>a.text)})
+            break;
+          case 'essay':
+            questions.push({ type: 'essay', value: question.questiontext })
+            break;
+          case 'matching':
+            console.log(question)
+            break;
           default:
             console.error("Unsupported");
         }
       }
+      console.log(questions)
       this.setState({ quiz: {title: "", questions}});
     })
   }
   decode(input) {
-    return window.atob(input.slice(21));
+    return decodeURIComponent(window.atob(input.slice(21)).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
   }
   componentDidMount(){
     if (GLOBAL_CONFIG.dev) {
       if(GLOBAL_CONFIG.moodleXmlPath) {
         this.parseMoodleXML(this.decode(GLOBAL_CONFIG.moodleXmlPath));
+        this.setState({loading: false})
+      } else {
+        this.setState({loading: false})
       }
+
     } else {
-      fetch(GLOBAL_CONFIG.moodleXmlPath || "assets/test2.xml")
+      fetch(GLOBAL_CONFIG.moodleXmlPath || "assets/quiz.xml")
       .then(res => res.text())
       .then(res => {
         this.parseMoodleXML(res);
+        this.setState({loading: false})
+
+      })
+      .catch(err=>{
+        this.setState({loading: false})
       })
     }
   }

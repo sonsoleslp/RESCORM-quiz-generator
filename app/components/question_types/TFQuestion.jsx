@@ -1,7 +1,7 @@
 import React from 'react';
 
-import * as Utils from '../vendors/Utils.js';
-import {objectiveAccomplished, objectiveAccomplishedThunk} from './../reducers/actions';
+import * as Utils from '../../vendors/Utils.js';
+import {objectiveAccomplished, objectiveAccomplishedThunk} from './../../reducers/actions';
 
 import MCQuestionChoice from './MCQuestionChoice.jsx';
 import MCQuestionChoiceSingle from './MCQuestionChoiceSingle.jsx';

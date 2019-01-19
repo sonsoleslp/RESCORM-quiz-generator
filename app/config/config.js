@@ -1,7 +1,7 @@
  export let GLOBAL_CONFIG = {
   dev:{...{
     title: "Quiz",
-    primaryColor: "#e84100",
+    primaryColor: "#20BEB8",
     primaryColorText: "#ffffff",
     secondaryColor: "#333333",
     secondaryColorText: "#ffffff",
@@ -26,7 +26,7 @@
   },...window.config},
   production:{...{
     title: "Quiz",
-    primaryColor: "#e84100",
+    primaryColor: "#20BEB8",
     primaryColorText: "#ffffff",
     secondaryColor: "#333333",
     secondaryColorText: "#ffffff",

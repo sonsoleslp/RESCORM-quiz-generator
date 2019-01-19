@@ -5,8 +5,7 @@ import * as Utils from '../vendors/Utils.js';
 import {addObjectives, resetObjectives, finishApp} from './../reducers/actions';
 
 import QuizHeader from './QuizHeader.jsx';
-import MCQuestion from './MCQuestion.jsx';
-import TFQuestion from './TFQuestion.jsx';
+import { MCQuestion, TFQuestion, Numerical, ShortAnswer, Essay } from './question_types/_questions';
 
 export default class Quiz extends React.Component {
   constructor(props){
@@ -14,24 +13,6 @@ export default class Quiz extends React.Component {
     let quiz = this.props.quiz;
     let questions = quiz.questions;
 
-    // Adaptive behaviour
-    // Sort questions based on difficulty
-    let adaptive_sorted = false;
-    /*if((this.props.config.adaptive === true) && (typeof props.user_profile === "object") && (typeof props.user_profile.learner_preference === "object") && (typeof props.user_profile.learner_preference.difficulty === "number")){
-      let difficulty = props.user_profile.learner_preference.difficulty;
-      if((difficulty >= 0) && (difficulty <= 10)){
-        for(let i = 0; i < questions.length; i++){
-          if((typeof questions[i].difficulty !== "number") || (questions[i].difficulty < 0) || (questions[i].difficulty > 10)){
-            questions[i].difficulty = 5;
-          }
-          questions[i].suitability = (10 - Math.abs((questions[i].difficulty - difficulty))) / 10;
-        }
-        questions.sort(function(a, b){ return b.suitability - a.suitability; });
-        adaptive_sorted = true;
-      }
-    }
-*/
-    console.log("RANDOM",this.props.config.randomQuestions)
     if(this.props.config.randomQuestions){
       questions = Utils.shuffleArray(questions);
     }
@@ -84,6 +65,15 @@ export default class Quiz extends React.Component {
       break;
     case "true_false":  
       currentQuestionRender = (<TFQuestion config={this.props.config} question={currentQuestion} dispatch={this.props.dispatch} I18n={this.props.I18n} objective={objective} onNextQuestion={onNextQuestion} onResetQuiz={onResetQuiz} isLastQuestion={isLastQuestion} quizCompleted={this.props.tracking.finished}/>);
+      break;
+    case "numerical":
+      currentQuestionRender = (<Numerical config={this.props.config} question={currentQuestion} dispatch={this.props.dispatch} I18n={this.props.I18n} objective={objective} onNextQuestion={onNextQuestion} onResetQuiz={onResetQuiz} isLastQuestion={isLastQuestion} quizCompleted={this.props.tracking.finished}/>);
+      break;
+    case 'shortanswer':
+      currentQuestionRender = (<ShortAnswer config={this.props.config} question={currentQuestion} dispatch={this.props.dispatch} I18n={this.props.I18n} objective={objective} onNextQuestion={onNextQuestion} onResetQuiz={onResetQuiz} isLastQuestion={isLastQuestion} quizCompleted={this.props.tracking.finished}/>);
+      break;
+    case 'essay':
+      currentQuestionRender = (<Essay config={this.props.config} question={currentQuestion} dispatch={this.props.dispatch} I18n={this.props.I18n} objective={objective} onNextQuestion={onNextQuestion} onResetQuiz={onResetQuiz} isLastQuestion={isLastQuestion} quizCompleted={this.props.tracking.finished}/>);
       break;
     default:
       currentQuestionRender = "Question type not supported";
