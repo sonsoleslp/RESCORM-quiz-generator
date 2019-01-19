@@ -46,7 +46,6 @@ export default class Numerical extends React.Component {
 		this.setState({answered:true});
 	}
 	render() {
-		console.log(this.props)
 		let incorrect = this.props.objective.accomplished_score === 0;
 		let feedback = !incorrect ? <i className="material-icons feedback-icon correct">check</i> : <i className="material-icons feedback-icon incorrect">close</i>
 		return [<div key="question" className="question">

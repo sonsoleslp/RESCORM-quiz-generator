@@ -41,7 +41,6 @@ export class App extends React.Component {
         <FinishScreen msg={this.props.tracking.score >= GLOBAL_CONFIG.scorm.score_threshold ? GLOBAL_CONFIG.successMessage : GLOBAL_CONFIG.failMessage} dispatch={this.props.dispatch} user_profile={this.props.user_profile} tracking={this.props.tracking} quiz={this.state.quiz} config={GLOBAL_CONFIG} I18n={I18n}/>
       );
     } else {
-      console.log('spinning')
       appContent = <div className="wholeScreen">
         Loading...
       </div>;
@@ -82,7 +81,6 @@ export class App extends React.Component {
   parseMoodleXML(xml) {
     xmlToJson(xml, (r,e)=>{
       let questions = [];
-      console.log(r.questions)
       for (let q in r.questions) {
         let question = r.questions[q];
         switch(question.type) {
@@ -102,13 +100,11 @@ export class App extends React.Component {
             questions.push({ type: 'essay', value: question.questiontext })
             break;
           case 'matching':
-            console.log(question)
             break;
           default:
             console.error("Unsupported");
         }
       }
-      console.log(questions)
       this.setState({ quiz: {title: "", questions}});
     })
   }

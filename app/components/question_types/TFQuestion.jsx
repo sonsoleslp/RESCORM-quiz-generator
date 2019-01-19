@@ -32,8 +32,7 @@ export default class TFQuestion extends React.Component {
     let correctAnswers = 0;
     let incorrectAnswers = 0;
     let blankAnswers = 0;
-    console.log(this.props.question.answer, this.state.selected_choices_ids)
-    if(this.state.selected_choices_ids.indexOf(this.props.question.answer) !== -1) {
+    if (this.state.selected_choices_ids.indexOf(this.props.question.answer) !== -1) {
       correctAnswers = 1;
     } else if (this.state.selected_choices_ids.indexOf(!this.props.question.answer) !== -1) {
       incorrectAnswers = 1;
@@ -41,9 +40,7 @@ export default class TFQuestion extends React.Component {
       blankAnswers = 1;
     }
 
-    console.log(correctAnswers, incorrectAnswers, blankAnswers)
     let scorePercentage = Math.max(0, (correctAnswers - incorrectAnswers));
-    console.log("score",scorePercentage)
 
     // Send data via SCORM
     let objective = this.props.objective;
